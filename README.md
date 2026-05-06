@@ -10,6 +10,11 @@ ODDIO è una web app dimostrativa per l'Italia che mette in relazione eventi di 
 - Generazione di report settimanali scaricabili in PDF tramite jsPDF, con fallback alla stampa del browser.
 - Modulo di iscrizione email a campo singolo con simulazione double opt-in in `localStorage`.
 
+
+## Dove trovare subito l'app
+
+Per evitare ambiguità con il Desktop dell'ambiente cloud, nel repository è presente anche una cartella visibile `Desktop/ODDIO/`: apri direttamente `Desktop/ODDIO/index.html`. Questa cartella è parte del progetto scaricato; non dipende dal Desktop reale del computer.
+
 ## Avvio locale
 
 Essendo un prototipo statico, basta servire la cartella con un web server:
