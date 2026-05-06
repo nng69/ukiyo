@@ -1,0 +1,10 @@
+ODDIO è già in questa cartella.
+
+Apri:
+Desktop/ODDIO/index.html
+
+Se vuoi copiarlo sul Desktop reale del tuo computer, esegui dalla cartella principale del progetto:
+- macOS/Linux: INSTALLA_ODDIO_SU_DESKTOP.command oppure INSTALLA_ODDIO_SU_DESKTOP.sh
+- Windows: INSTALLA_ODDIO_SU_DESKTOP.bat
+
+Nota: il Desktop dell'ambiente cloud non è lo stesso Desktop del tuo computer.

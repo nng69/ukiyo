@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ODDIO · Osservatorio dati d'odio in Italia</title>
+    <meta
+      name="description"
+      content="ODDIO mette in relazione cronaca italiana e indicatori d'odio ispirati al framework HODIO, con filtri territoriali e report settimanali scaricabili."
+    />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="nav" aria-label="Navigazione principale">
+        <a class="brand" href="#top" aria-label="ODDIO home">
+          <span class="brand-mark">O</span>
+          <span>
+            <strong>ODDIO</strong>
+            <small>Osservatorio dati d'odio</small>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="#dashboard">Dashboard</a>
+          <a href="#eventi">Eventi</a>
+          <a href="#report">Report</a>
+          <a href="#metodo">Metodo</a>
+        </div>
+      </nav>
+
+      <section id="top" class="hero-grid">
+        <div>
+          <p class="eyebrow">Italia · prototipo analitico</p>
+          <h1>Misura l'impronta dell'odio e collegala alla cronaca.</h1>
+          <p class="lead">
+            ODDIO è una web app dimostrativa ispirata a HODIO (Huella del Odio y la Polarización):
+            monitora prevalenza, amplificazione, incitamento e polarizzazione dei discorsi d'odio,
+            limitando l'analisi al territorio italiano.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#dashboard">Apri dashboard</a>
+            <a class="button ghost" href="#report">Scarica report</a>
+          </div>
+        </div>
+        <aside class="hero-card" aria-label="Sintesi indice nazionale">
+          <span class="status-dot"></span>
+          <p>Indice composito nazionale</p>
+          <strong id="hero-score">--</strong>
+          <small id="hero-delta">Aggiornamento in corso</small>
+        </aside>
+      </section>
+    </header>
+
+    <main>
+      <section class="panel filters" aria-labelledby="filters-title">
+        <div>
+          <p class="eyebrow">Filtri territoriali</p>
+          <h2 id="filters-title">Analisi per regione e provincia</h2>
+        </div>
+        <label>
+          Regione
+          <select id="region-filter" aria-label="Seleziona regione"></select>
+        </label>
+        <label>
+          Provincia
+          <select id="province-filter" aria-label="Seleziona provincia"></select>
+        </label>
+        <label>
+          Settimana
+          <select id="week-filter" aria-label="Seleziona settimana"></select>
+        </label>
+      </section>
+
+      <section id="dashboard" class="dashboard" aria-labelledby="dashboard-title">
+        <div class="section-heading">
+          <p class="eyebrow">Dashboard</p>
+          <h2 id="dashboard-title">Indicatori HODIO adattati al contesto italiano</h2>
+          <p>
+            I dati sono sintetici e servono a mostrare il prodotto: in produzione andrebbero sostituiti con
+            feed certificati, dati social pubblici, rassegna stampa e validazione umana.
+          </p>
+        </div>
+
+        <div class="kpi-grid" id="kpi-grid"></div>
+
+        <div class="chart-grid">
+          <article class="panel chart-card">
+            <div class="card-heading">
+              <h3>Andamento settimanale</h3>
+              <span id="scope-label"></span>
+            </div>
+            <canvas id="trend-chart" height="130" aria-label="Grafico andamento indice composito"></canvas>
+          </article>
+          <article class="panel chart-card">
+            <div class="card-heading">
+              <h3>Componenti dell'indice</h3>
+              <span>scala 0-100</span>
+            </div>
+            <canvas id="radar-chart" height="130" aria-label="Grafico radar componenti HODIO"></canvas>
+          </article>
+        </div>
+      </section>
+
+      <section id="eventi" class="events-layout" aria-labelledby="events-title">
+        <div class="section-heading">
+          <p class="eyebrow">Cronaca e contesto</p>
+          <h2 id="events-title">Eventi potenzialmente correlati agli indici d'odio</h2>
+          <p>
+            Ogni evento è collegato agli scostamenti anomali della settimana selezionata. Le relazioni sono
+            ipotesi analitiche da verificare, non causalità automatiche.
+          </p>
+        </div>
+        <div class="panel event-list" id="event-list"></div>
+      </section>
+
+      <section id="report" class="report-grid" aria-labelledby="report-title">
+        <div class="panel report-card">
+          <p class="eyebrow">Report settimanale</p>
+          <h2 id="report-title">Genera e scarica PDF</h2>
+          <p>
+            Il PDF include filtri attivi, KPI, principali variazioni e note sugli eventi. È pensato per
+            redazioni, PA, centri di ricerca e organizzazioni civiche.
+          </p>
+          <button class="button primary" id="download-report">Scarica report PDF</button>
+          <p class="helper" id="pdf-helper">Se jsPDF non è disponibile, si aprirà la finestra di stampa del browser.</p>
+        </div>
+
+        <form class="panel signup-card" id="signup-form" novalidate>
+          <p class="eyebrow">Email automatiche</p>
+          <h2>Ricevi il report ogni settimana</h2>
+          <p>
+            Inserisci solo l'email. ODDIO simula un controllo double opt-in: dopo l'invio viene generato un
+            link di conferma locale prima dell'attivazione.
+          </p>
+          <label>
+            Email
+            <input id="email" name="email" type="email" placeholder="nome@dominio.it" autocomplete="email" required />
+          </label>
+          <button class="button secondary" type="submit">Iscrivimi</button>
+          <div class="signup-feedback" id="signup-feedback" role="status" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <section id="metodo" class="method panel" aria-labelledby="method-title">
+        <p class="eyebrow">Metodo e miglioramenti</p>
+        <h2 id="method-title">Framework HODIO, limiti e prossimi passi</h2>
+        <div class="method-grid">
+          <div>
+            <h3>Indici usati</h3>
+            <ul>
+              <li><strong>Prevalenza:</strong> quota di contenuti con segnali d'odio nel campione.</li>
+              <li><strong>Amplificazione:</strong> capacità dei contenuti problematici di propagarsi.</li>
+              <li><strong>Incitamento:</strong> severità di inviti a ostilità, discriminazione o violenza.</li>
+              <li><strong>Polarizzazione:</strong> distanza semantica e intensità del conflitto tra comunità.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Suggerimenti per la versione reale</h3>
+            <ul>
+              <li>Pipeline dati con fonti pubbliche, deduplica, anonimizzazione e retention minima.</li>
+              <li>Revisione umana su campioni stratificati e registro di audit per ridurre bias.</li>
+              <li>Alert solo aggregati, senza sorveglianza individuale né ranking di persone.</li>
+              <li>Integrazione newsletter reale con provider transazionale e token double opt-in server-side.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="sources">
+          Riferimenti: HODIO/OBERAXE misura presenza, evoluzione, prevalenza e amplificazione dei discorsi
+          d'odio su piattaforme social; ODDIO ne riusa il lessico come adattamento progettuale per l'Italia.
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <strong>ODDIO</strong>
+      <span>Prototipo dimostrativo · dati sintetici · non sostituisce analisi legale o moderazione professionale.</span>
+    </footer>
+  </body>
+</html>
